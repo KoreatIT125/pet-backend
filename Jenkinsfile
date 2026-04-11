@@ -24,7 +24,13 @@ pipeline {
             }
             post {
                 always {
-                    junit '**/build/test-results/test/*.xml'
+                    script {
+                        if (fileExists('**/build/test-results/test/*.xml')) {
+                            junit '**/build/test-results/test/*.xml'
+                        } else {
+                            echo '⚠️ 테스트 결과 파일이 없습니다 (테스트 코드 미작성)'
+                        }
+                    }
                 }
             }
         }
