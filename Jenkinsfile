@@ -54,13 +54,8 @@ pipeline {
                     
                     docker run -d \
                         --name petmediscan-backend \
-                        --network pet-infra_petmediscan-network \
+                        --restart always \
                         -p 8080:8080 \
-                        -e SPRING_DATASOURCE_URL=jdbc:mysql://petmediscan-db:3306/KIT125 \
-                        -e SPRING_DATASOURCE_USERNAME=pet_user \
-                        -e SPRING_DATASOURCE_PASSWORD=pet_pass123 \
-                        -e AI_EYE_SERVICE_URL=http://petmediscan-ai-eye:5000 \
-                        -e AI_SKIN_SERVICE_URL=http://petmediscan-ai-skin:5001 \
                         petmediscan-backend:latest
                 '''
             }
