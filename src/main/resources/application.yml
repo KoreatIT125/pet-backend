@@ -4,13 +4,13 @@ spring:
   
   datasource:
     # 로컬 개발: 환웅님 컴퓨터 MySQL (같은 Wi-Fi 필요)
-    url: jdbc:mysql://192.168.2.15:3308/KIT125?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://192.168.2.15:3308/KIT125?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useHostsInPrivileges=false
     # 본인 컴퓨터에서 실행 시: localhost:3308
     # url: jdbc:mysql://localhost:3308/KIT125?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: pet_user
     password: pet_pass123
     driver-class-name: com.mysql.cj.jdbc.Driver
-  
+
   jpa:
     hibernate:
       ddl-auto: update
