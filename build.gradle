@@ -37,6 +37,11 @@ dependencies {
 	// 구글 로그인
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+    // JWT 로그인
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
     // Swagger (SpringDoc OpenAPI)
     implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 

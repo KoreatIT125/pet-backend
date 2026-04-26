@@ -40,9 +40,8 @@ public class UserController {
 			return "signup_form";
 		}
 		
-		
 		try {
-			userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1());
+			userService.create(userCreateForm.getUserId(), userCreateForm.getPassword1(), userCreateForm.getUserName());
 			
 		}catch(DataIntegrityViolationException e) {
 			e.printStackTrace(); 

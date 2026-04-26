@@ -8,14 +8,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUser create(String username, String password, String email) {
+    // NoArgsConstructor 방식
+    public SiteUser create(String userId, String password, String userName) {
         SiteUser user = new SiteUser();
-        user.setUsername(username);
+        user.setUserId(userId);
         user.setPassword(passwordEncoder.encode(password));
-        user.setEmail(email);
+        user.setUserName(userName);
+        //user.setRole(UserRole.USER);
+
         this.userRepository.save(user);
         return user;
     }

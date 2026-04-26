@@ -2,6 +2,8 @@ package com.disaster.safety.user;
 
 import lombok.Getter;
 
+// 유저 권한
+
 @Getter
 public enum UserRole {
     ADMIN("ROLE_ADMIN"),
