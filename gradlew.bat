@@ -1,10 +1,3 @@
-#!/usr/bin/env sh
-
-##############################################################################
-##
-##  Gradle start up script for Windows
-##############################################################################
-
 @rem Set local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" setlocal
 

@@ -52,3 +52,8 @@ weights/*.pt
 # Uploads
 uploads/
 temp/
+
+# cache files
+.gradle/
+build/
+bin/

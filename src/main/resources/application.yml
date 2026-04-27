@@ -2,17 +2,18 @@ spring:
   application:
     name: petmediscan-backend
   
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-            scope:
-              - email
-              - profile
+  # security:
+  #   oauth2:
+  #     client:
+  #       registration:
+  #         google:
+  #           client-id: ${GOOGLE_CLIENT_ID}
+  #           client-secret: ${GOOGLE_CLIENT_SECRET}
+  #           scope:
+  #             - email
+  #             - profile
 
+  
 
   datasource:
     # Docker 컨테이너에서 실행 시: host.docker.internal 사용
@@ -23,11 +24,11 @@ spring:
     # password: pet_pass123
     # driver-class-name: com.mysql.cj.jdbc.Driver
 
-    H2-DataBase
-      url:jdbc:h2:~/local
-      driver-class-name:org.h2.Driver
-      username:sa
-      password:""
+    # H2-DataBase
+    url: jdbc:h2:~/local
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
 
   h2:
     console:
@@ -41,10 +42,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
-  
+        #dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.H2Dialect
 server:
   port: 8097
+
+jwt:
+  #secret: ${JWT_SECRET}
+  # 최소 32자 이상 필요
+  secret: test-secret-key-1234567890-abcdef
+  expiration_time: 3600
 
 logging:
   level:
