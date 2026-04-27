@@ -49,7 +49,7 @@ public class DiagnosisController {
         return "";
     }
 
-    @GetMapping("/history/:{petId}")
+    @GetMapping("/history/{petId}")
     public String detail(@PathVariable("petId") Integer petId){
         Pet pet = petService.get(petId);
         diagnosisService.findAllByPet(pet);
