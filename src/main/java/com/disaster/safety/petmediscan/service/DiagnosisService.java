@@ -8,9 +8,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.disaster.safety.member.entity.Member;
 import com.disaster.safety.petmediscan.dto.DiseaseResponse;
 import com.disaster.safety.petmediscan.dto.FastApiResponse;
 import com.disaster.safety.petmediscan.entity.Disease;
+import com.disaster.safety.petmediscan.entity.Pet;
 import com.disaster.safety.petmediscan.entity.Types;
 
 import lombok.RequiredArgsConstructor;
@@ -23,12 +25,13 @@ public class DiagnosisService {
     private final DiseaseService diseaseService;
     private final DiagnosisLogService diagnosisLogService;
 
-    public List<DiseaseResponse> diagnose(MultipartFile file, Types type) throws IOException {
+    public List<DiseaseResponse> diagnose(MultipartFile file, Types type, 
+                                       Pet pet, Member member) throws IOException {
         // 1. 리사이징
         byte[] resizedImage = imageService.resizeImage(file);
 
         // 2. FastAPI 호출
-        FastApiResponse response = fastApiService.predict(file, type);
+        FastApiResponse response = fastApiService.predict(resizedImage, file.getOriginalFilename(), type);
 
         // 3. label 추출
         List<String> labels = response.getTop5().stream()
@@ -48,7 +51,7 @@ public class DiagnosisService {
                 ));
 
         // 6. 로그 저장
-        diagnosisLogService.saveLogs(diseases, scoreMap);
+        diagnosisLogService.saveLogs(diseases, scoreMap, pet, member, type);
 
         // 7. 응답 반환
         return diseases.stream()
@@ -61,5 +64,5 @@ public class DiagnosisService {
                         scoreMap.getOrDefault(d.getName(), 0.0)
                 ))
                 .toList();
-    }
+        }
 }

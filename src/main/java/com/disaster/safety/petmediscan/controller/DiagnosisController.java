@@ -4,19 +4,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.disaster.safety.member.entity.Member;
+import com.disaster.safety.member.service.MemberService;
 import com.disaster.safety.petmediscan.dto.DiseaseResponse;
 import com.disaster.safety.petmediscan.entity.Diagnosis;
+import com.disaster.safety.petmediscan.entity.DiagnosisLog;
 import com.disaster.safety.petmediscan.entity.Pet;
 import com.disaster.safety.petmediscan.entity.Types;
-import com.disaster.safety.petmediscan.repository.DiagnosisRepository;
+import com.disaster.safety.petmediscan.service.DiagnosisLogService;
 import com.disaster.safety.petmediscan.service.DiagnosisService;
 import com.disaster.safety.petmediscan.service.PetService;
 
@@ -28,8 +34,8 @@ import lombok.RequiredArgsConstructor;
 public class DiagnosisController {
     private final DiagnosisService diagnosisService;
     private final PetService petService;
-    private final DiagnosisRepository diagnosisRepository;
-
+    private final MemberService memberService;
+    private final DiagnosisLogService diagnosisLogService; 
     @PostMapping("/skin")
     public String setSkin(Integer petId, String image){
         Pet pet = petService.get(petId);
@@ -59,19 +65,22 @@ public class DiagnosisController {
     @PostMapping
     public ResponseEntity<List<DiseaseResponse>> diagnose(
             @RequestPart("image") MultipartFile file,
-            @RequestPart("type") Types type) {
+            @RequestParam("type") Types type,
+            @RequestParam("petId") Long petId,
+            @AuthenticationPrincipal UserDetails userDetails) { // JWT에서 유저 추출
         try {
-            return ResponseEntity.ok(diagnosisService.diagnose(file, type));
+            Pet pet = petService.get(petId);
+            Member member = memberService.getByUserId(userDetails.getUsername());
+            
+            return ResponseEntity.ok(diagnosisService.diagnose(file, type, pet, member));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
     
     @GetMapping("/history/{petId}")
-    public String detail(@PathVariable("petId") Integer petId){
+    public ResponseEntity<List<DiagnosisLog>> history(@PathVariable Long petId){
         Pet pet = petService.get(petId);
-        diagnosisRepository.findByPet(pet);
-        
-        return "diagnosis";
+        return ResponseEntity.ok(diagnosisLogService.getLogsByPet(pet));
     }
 }
