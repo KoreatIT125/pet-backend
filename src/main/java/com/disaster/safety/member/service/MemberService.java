@@ -66,4 +66,9 @@ public class MemberService {
         memberRepository.create(member);
         return member.getId();
     }
+
+    public Member getByUserId(String userId) {
+    return memberRepository.findByUserId(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+}
 }

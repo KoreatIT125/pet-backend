@@ -1,9 +1,9 @@
 package com.disaster.safety.petmediscan.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -23,16 +23,23 @@ public class FastApiService { // FastAPI와의 통신을 담당하는 서비스
         this.skinWebClient = skinWebClient;
     }
 
-    public FastApiResponse predict(MultipartFile file, Types type) {
-        WebClient client = type == Types.Eye ? eyeWebClient : skinWebClient;
+    public FastApiResponse predict(byte[] resizedImage, String filename, Types type) {
+    WebClient client = type == Types.Eye ? eyeWebClient : skinWebClient;
 
-        FastApiResponse response = client.post()
-                .uri("/predict")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .body(BodyInserters.fromMultipartData("image", file.getResource()))
-                .retrieve()
-                .bodyToMono(FastApiResponse.class)
-                .block();
+    ByteArrayResource resource = new ByteArrayResource(resizedImage) {
+        @Override
+        public String getFilename() {
+            return filename != null ? filename : "image.jpg";
+        }
+    };
+
+    FastApiResponse response = client.post()
+            .uri("/predict")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .body(BodyInserters.fromMultipartData("image", resource))
+            .retrieve()
+            .bodyToMono(FastApiResponse.class)
+            .block();
 
         if (response == null || response.getTop5() == null) {
             throw new RuntimeException("FastAPI 응답 없음");
