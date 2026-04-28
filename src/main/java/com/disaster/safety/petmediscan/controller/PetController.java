@@ -26,7 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/pets")
 public class PetController {
     private final PetService petService;
-
+    
+    // memberId(파라미터)로 Pet List 획득하는 Get 매핑
     @GetMapping("")
     public ResponseEntity<List<PetResponseDto>> petList(@RequestParam("memberId") Long memberId) {
         List<PetResponseDto> pets = petService.findAllByMember(memberId)
@@ -36,6 +37,7 @@ public class PetController {
         return ResponseEntity.ok(pets);
     }
 
+    // petCreateForm(리퀘스트바디)으로 Pet 개체 생성하는 Post 매핑
     @PostMapping("")
     public ResponseEntity<PetResponseDto> createPet(@Valid @RequestBody PetCreateForm petCreateForm) {
         String breed = petCreateForm.getBreed() == null ? "" : petCreateForm.getBreed();
@@ -49,15 +51,17 @@ public class PetController {
         return ResponseEntity.status(HttpStatus.CREATED).body(PetResponseDto.from(pet));
     }
 
+    // petId(경로)로 Pet 단일 개체 획득하는 Get 매핑
     @GetMapping("/{petId}")
     public ResponseEntity<PetResponseDto> getPet(@PathVariable("petId") Long petId) {
         return ResponseEntity.ok(PetResponseDto.from(petService.get(petId)));
     }
 
-    @PutMapping("/{id}")
+    // petId(경로)와 petCreateForm(리퀘스트바디)로 Pet 단일 개체 수정하는 Put 매핑
+    @PutMapping("/{petId}")
     public ResponseEntity<PetResponseDto> modifyPet(@RequestBody PetCreateForm petCreateForm,
-            @PathVariable("id") Long id) {
-        var pet = petService.modify(id, petCreateForm.getBreed(), petCreateForm.getBirth_date());
+            @PathVariable("petId") Long petId) {
+        var pet = petService.modify(petId, petCreateForm.getBreed(), petCreateForm.getBirth_date());
         return ResponseEntity.ok(PetResponseDto.from(pet));
     }
 }
