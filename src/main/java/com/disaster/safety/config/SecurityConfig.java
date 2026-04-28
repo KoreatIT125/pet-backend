@@ -47,16 +47,16 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/swagger-ui.html",
             "/swagger-resources/**",
-            // 스웨거 로컬 접속주소 ##테스트 할때 포트 설정 확인##
-            // http://localhost:8097/swagger-ui/index.html
+            // 스웨거 로컬 접속주소 
+            // http://localhost:8080/swagger-ui/index.html
 
             "/oauth2/authorization/**",
             "/login/oauth2/code/**",
             "/api/member/login/oauth2/**"
             // 소셜 로그인 테스트 주소
-            // http://localhost:8097/oauth2/authorization/google\
+            // http://localhost:8080/oauth2/authorization/google\
             // 승인되고 나서 테스트 할 주소
-            // http://localhost:8097/login/oauth2/code/google
+            // http://localhost:8080/login/oauth2/code/google
         
             
     };
