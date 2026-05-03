@@ -37,7 +37,6 @@ public class Disease {
     @Column(nullable = false, name = "risk_level")
     private RiskTypes riskLevel; // 상 / 중 / 하
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "category" )
-    private Types category; // 피부 / 안구
+    private String category; // Skin/Eye 또는 피부/안구
 }
