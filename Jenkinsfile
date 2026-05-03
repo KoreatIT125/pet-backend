@@ -1,6 +1,10 @@
 pipeline {
     agent any
     
+    triggers {
+        githubPush()
+    }
+    
     stages {
         stage('Checkout') {
             steps {
@@ -54,8 +58,9 @@ pipeline {
                     
                     docker run -d \
                         --name petmediscan-backend \
-                        --restart always \
-                        -p 8080:8080 \
+                        --network petmediscan-infra_petmediscan-network \
+                        --network-alias backend \
+                        --restart unless-stopped \
                         petmediscan-backend:latest
                 '''
             }

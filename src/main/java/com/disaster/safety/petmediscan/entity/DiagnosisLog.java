@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.disaster.safety.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import lombok.Setter;
 @Table(name = "diagnosis_log")
 @Getter 
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DiagnosisLog {
 
     @Id
@@ -31,14 +33,17 @@ public class DiagnosisLog {
     // 어떤 질병인지 (FK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "disease_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Disease disease;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Pet pet;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Member member;
 
     @Enumerated(EnumType.STRING)

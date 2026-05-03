@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.disaster.safety.petmediscan.entity.Disease;
-import com.disaster.safety.petmediscan.entity.Types;
 
 public interface DiseaseRepository extends JpaRepository<Disease, Long> {
 
@@ -14,5 +13,5 @@ public interface DiseaseRepository extends JpaRepository<Disease, Long> {
 
     Optional<Disease> findByName(String name);
     
-    List<Disease> findByNameInAndCategory(List<String> names, Types category);
+    List<Disease> findByNameInAndCategoryIn(List<String> names, List<String> categories);
 }

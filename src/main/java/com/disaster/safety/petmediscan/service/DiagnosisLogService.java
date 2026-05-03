@@ -20,7 +20,7 @@ public class DiagnosisLogService {
     private final DiagnosisLogRepository diagnosisLogRepository;
 
   public void saveLogs(List<Disease> diseases, Map<String, Double> scoreMap,
-                         Pet pet, Member member, Types type) {
+                         Pet pet, Member member, Types type, String imageUrl) {
         List<DiagnosisLog> logs = diseases.stream()
                 .map(disease -> {
                     DiagnosisLog log = new DiagnosisLog();
@@ -29,6 +29,7 @@ public class DiagnosisLogService {
                     log.setPet(pet);
                     log.setMember(member);
                     log.setType(type);
+                    log.setImageUrl(imageUrl);
                     return log;
                 })
                 .toList();
