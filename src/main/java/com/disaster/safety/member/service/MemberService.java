@@ -2,7 +2,6 @@ package com.disaster.safety.member.service;
 
 import java.util.Optional;
 
-// import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.disaster.safety.member.dto.CustomUserInfoDto;
 import com.disaster.safety.member.dto.LoginRequestDto;
 import com.disaster.safety.member.entity.Member;
+import com.disaster.safety.member.entity.RoleType;
 import com.disaster.safety.member.exception.ValidateMemberException;
 import com.disaster.safety.member.repository.MemberRepository;
 import com.disaster.safety.security.util.JwtUtil;
@@ -26,7 +26,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder encoder;
-    // private final ModelMapper modelMapper;
 
     @Transactional
     public String login(LoginRequestDto dto) {
@@ -63,12 +62,14 @@ public class MemberService {
         }
 
         member.updatePassword(encoder.encode(member.getPassword()));
+        // 2026-05-04: 일반 회원가입 사용자는 기본 role을 USER로 고정
+        member.setRole(RoleType.USER);
         memberRepository.create(member);
         return member.getId();
     }
 
     public Member getByUserId(String userId) {
-    return memberRepository.findByUserId(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found."));
-}
+        return memberRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+    }
 }

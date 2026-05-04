@@ -1,5 +1,8 @@
 package com.disaster.safety.member.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -20,9 +23,6 @@ import com.disaster.safety.member.entity.Member;
 import com.disaster.safety.member.service.MemberService;
 import com.disaster.safety.security.util.JwtUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -41,11 +41,11 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<Long> signup(@Valid @RequestBody MemberRequestDto member) {
+        // 2026-05-04: 회원가입 role은 서버에서만 부여하도록 변경
         Member entity = new Member();
         entity.setUserId(member.getUserId());
         entity.setUserName(member.getUserName());
         entity.setPassword(member.getPassword());
-        entity.setRole(member.getRole());
 
         Long id = memberService.signup(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(id);

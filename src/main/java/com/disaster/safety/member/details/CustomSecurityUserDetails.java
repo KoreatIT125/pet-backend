@@ -1,6 +1,5 @@
 package com.disaster.safety.member.details;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,52 +12,47 @@ import com.disaster.safety.member.dto.CustomUserInfoDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-// 스프링 시큐리티의 userDetails 인터페이스를 구현하여 사용자 정보를
-// SecurityContext에 자용할 수 있도록 제공
+// Spring Security에서 인증된 사용자 정보를 담아두는 UserDetails 구현체
 
 @Getter
 @RequiredArgsConstructor
 public class CustomSecurityUserDetails implements UserDetails {
 
-	private final CustomUserInfoDto member;
+    private final CustomUserInfoDto member;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<String> roles = new ArrayList<>();
-		roles.add("ROLE_" + member.getRole().toString());
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // 2026-05-04: 일반 로그인 권한도 ROLE_* 형식으로 통일
+        return List.of(new SimpleGrantedAuthority(member.getRole().getValue()));
+    }
 
-		return roles.stream()
-			.map(SimpleGrantedAuthority::new)
-			.toList();
-	}
+    @Override
+    public String getPassword() {
+        return member.getPassword();
+    }
 
-	@Override
-	public String getPassword() {
-		return member.getPassword();
-	}
+    @Override
+    public String getUsername() {
+        return member.getUserId();
+    }
 
-	@Override
-	public String getUsername() {
-		return member.getUserId();
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
