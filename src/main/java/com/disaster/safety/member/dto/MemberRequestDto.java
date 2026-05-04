@@ -2,19 +2,17 @@ package com.disaster.safety.member.dto;
 
 import javax.validation.constraints.NotBlank;
 
-import com.disaster.safety.member.entity.RoleType;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberRequestDto {
-    
-    @NotBlank(message = "ID는 필수 입력 값입니다.")
+
+    // 2026-05-04: 회원가입 요청에서는 role을 받지 않도록 정리
+    @NotBlank(message = "아이디는 필수 입력 값입니다.")
     private String userId;
 
     @NotBlank(message = "이름은 필수 입력 값입니다.")
@@ -22,6 +20,4 @@ public class MemberRequestDto {
 
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     private String password;
-
-    private RoleType role;
 }

@@ -1,10 +1,11 @@
 package com.disaster.safety.member.details;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -36,14 +37,8 @@ public class CustomOauth2UserDetails implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return member.getRole().name();
-            }
-        });
-        return collection;
+        // 2026-05-04: OAuth2 로그인 권한도 ROLE_* 형식으로 통일
+        return List.of(new SimpleGrantedAuthority(member.getRole().getValue()));
     }
 
     @Override

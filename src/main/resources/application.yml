@@ -20,21 +20,21 @@ spring:
     # Docker 컨테이너에서 실행 시: host.docker.internal 사용
     #url: jdbc:mysql://host.docker.internal:3308/KIT125?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     # 로컬 개발 (gradlew bootRun): 192.168.2.15:3308 사용
-    url: jdbc:mysql://petmediscan-mysql:3306/KIT125?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useHostsInPrivileges=false
-    username: admin
-    password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    # url: jdbc:mysql://petmediscan-mysql:3306/KIT125?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useHostsInPrivileges=false
+    # username: admin
+    # password: 1234
+    # driver-class-name: com.mysql.cj.jdbc.Driver
 
     # H2-DataBase
-    # url: jdbc:h2:~/local
-    # driver-class-name: org.h2.Driver
-    # username: sa
-    # password: ""
+    url: jdbc:h2:~/local
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
 
-  # h2:
-  #   console:
-  #     enabled: true
-  #     path: /h2-console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   jpa:
     hibernate:
@@ -43,8 +43,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        #dialect: org.hibernate.dialect.H2Dialect
+        #dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.H2Dialect
 server:
   port: 8080
 

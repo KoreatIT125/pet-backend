@@ -41,6 +41,7 @@ public class SecurityConfig {
     private static final String[] AUTH_WHITELIST = {
             "/api/member/login",
             "/api/member/signup",
+            "/h2-console/**",
             "/swagger-ui/**",
             //"/api-docs",
             //"/swagger-ui-custom.html"
@@ -70,6 +71,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(Customizer.withDefaults());
+        http.headers(headers -> headers.frameOptions().disable());
 
         //http.sessionManagement(sessionManagement ->
                 //sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
